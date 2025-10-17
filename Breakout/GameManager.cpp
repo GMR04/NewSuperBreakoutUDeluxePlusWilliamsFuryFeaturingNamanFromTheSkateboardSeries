@@ -17,10 +17,11 @@ GameManager::GameManager(sf::RenderWindow* window)
 
 void GameManager::initialize()
 {
+    _screenShakeManager = new ScreenShakeManager(_window);
     _paddle = new Paddle(_window);
     _brickManager = new BrickManager(_window, this);
     _messagingSystem = new MessagingSystem(_window);
-    _ball = new Ball(_window, 400.0f, this); 
+    _ball = new Ball(_window, _screenShakeManager, 400.0f, this); 
     _powerupManager = new PowerupManager(_window, _paddle, _ball);
     _ui = new UI(_window, _lives, this);
 
@@ -38,16 +39,18 @@ void GameManager::update(float dt)
     if (_lives <= 0)
     {
         _masterText.setString("Game over.");
+        _screenShakeManager->update(dt);
         return;
     }
     if (_levelComplete)
     {
         _masterText.setString("Level completed.");
+        _screenShakeManager->update(dt);
         return;
     }
     // pause and pause handling
     if (_pauseHold > 0.f) _pauseHold -= dt;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {
         if (!_pause && _pauseHold <= 0.f)
         {
@@ -69,7 +72,6 @@ void GameManager::update(float dt)
 
     // timer.
     _time += dt;
-
 
     if (_time > _timeLastPowerupSpawned + POWERUP_FREQUENCY && rand()%700 == 0)      // TODO parameterise
     {
@@ -114,6 +116,7 @@ void GameManager::update(float dt)
     _paddle->update(dt);
     _ball->update(dt);
     _powerupManager->update(dt);
+    _screenShakeManager->update(dt);
 }
 
 void GameManager::loseLife()
@@ -132,6 +135,7 @@ void GameManager::render()
     _powerupManager->render();
     _window->draw(_masterText);
     _ui->render();
+    _screenShakeManager->render();
 }
 
 void GameManager::levelComplete()

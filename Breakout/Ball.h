@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "ScreenShakeManager.h"
 
 
 class GameManager;  // forward declaration
@@ -8,7 +9,7 @@ class GameManager;  // forward declaration
 
 class Ball {
 public:
-    Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager);
+    Ball(sf::RenderWindow* window, ScreenShakeManager* screenShakeManager, float velocity, GameManager* gameManager);
     ~Ball();
     void update(float dt);
     void render();
@@ -19,6 +20,7 @@ private:
     sf::CircleShape _sprite;
     sf::Vector2f _direction;
     sf::RenderWindow* _window;
+    ScreenShakeManager* _screenShakeManager;
     float _velocity;
     bool _isAlive;
     bool _isFireBall;
