@@ -33,6 +33,8 @@ private:
     float _time;
     float _timeLastPowerupSpawned;
     int _lives;
+    int lastMouseXPos = -99;
+    bool usingMouseControls = false;
     bool _levelComplete;
     std::pair<POWERUPS, float> _powerupInEffect;
 

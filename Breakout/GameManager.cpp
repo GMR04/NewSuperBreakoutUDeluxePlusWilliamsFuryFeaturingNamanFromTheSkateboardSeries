@@ -78,8 +78,37 @@ void GameManager::update(float dt)
     }
 
     // move paddle
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) _paddle->moveRight(dt);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) _paddle->moveLeft(dt);
+    // switch to keyboard or mouse controls depending on whether the mouse has moved or a key is pressed
+    if (usingMouseControls)
+    {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            usingMouseControls = false;
+    }
+    else
+    {
+        if (sf::Mouse::getPosition().x != lastMouseXPos)
+            usingMouseControls = true;
+    }
+    
+    // if usingMouseControls, set paddle x position based of mouse's x position relative to window position 
+    if (usingMouseControls)
+    {
+        float windowScaleX = _window->getView().getSize().x / _window->getSize().x;
+        int mousePosX = (sf::Mouse::getPosition().x - _window->getPosition().x) * windowScaleX;
+
+        _paddle->setPositionX(mousePosX);
+    }
+    // else, move when A/D or left/right keys are pressed
+    else
+    {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) _paddle->moveLeft(dt);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) _paddle->moveRight(dt);
+    }
+
+    lastMouseXPos = sf::Mouse::getPosition().x;
 
     // update everything 
     _paddle->update(dt);
