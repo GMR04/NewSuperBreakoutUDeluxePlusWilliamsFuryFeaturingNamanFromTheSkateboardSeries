@@ -1,12 +1,11 @@
 #include "Ball.h"
 #include "GameManager.h" // avoid cicular dependencies
 
-Ball::Ball(sf::RenderWindow* window, ScreenShakeManager* screenShakeManager, float velocity, GameManager* gameManager)
+Ball::Ball(sf::RenderWindow* window, ScreenShakeManager* screenShakeManager, sf::Texture* tex, float velocity, GameManager* gameManager)
     : _window(window), _screenShakeManager(screenShakeManager), _velocity(velocity), _gameManager(gameManager),
     _timeWithPowerupEffect(0.f), _isFireBall(false), _isAlive(true), _direction({1,1})
 {
-    _sprite.setRadius(RADIUS);
-    _sprite.setFillColor(sf::Color::Cyan);
+    _sprite.setTexture(*tex);
     _sprite.setPosition(0, 300);
 }
 
@@ -28,7 +27,7 @@ void Ball::update(float dt)
         else
         {
             setFireBall(0);    // disable fireball
-            _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
+            _sprite.setColor(sf::Color::White);  // back to normal colour.
         }        
     }
 
@@ -37,7 +36,7 @@ void Ball::update(float dt)
     {
         // Flickering effect
         int flicker = rand() % 50 + 205; // Random value between 205 and 255
-        _sprite.setFillColor(sf::Color(flicker, flicker / 2, 0)); // Orange flickering color
+        _sprite.setColor(sf::Color(flicker, flicker / 2, 0)); // Orange flickering color
     }
 
     // Update position with a subtle floating-point error

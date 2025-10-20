@@ -41,6 +41,11 @@ private:
 
     sf::Font _font;
     sf::Text _masterText;
+       
+    // common sprite textures
+    sf::Texture ballTex;
+    sf::Texture healthTex;
+    sf::Texture brickTex;
 
     sf::RenderWindow* _window;
     Paddle* _paddle;

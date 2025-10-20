@@ -19,11 +19,16 @@ void GameManager::initialize()
 {
     _screenShakeManager = new ScreenShakeManager(_window);
     _paddle = new Paddle(_window);
-    _brickManager = new BrickManager(_window, this);
+    _brickManager = new BrickManager(_window, &brickTex, this);
     _messagingSystem = new MessagingSystem(_window);
-    _ball = new Ball(_window, _screenShakeManager, 400.0f, this); 
+
+    ballTex.loadFromFile("textures/ball.png");
+    healthTex.loadFromFile("textures/heart.png");
+    brickTex.loadFromFile("textures/brick.png");
+
+    _ball = new Ball(_window, _screenShakeManager, &ballTex, 400.0f, this);
     _powerupManager = new PowerupManager(_window, _paddle, _ball);
-    _ui = new UI(_window, _lives, this);
+    _ui = new UI(_window, _lives, &healthTex, this);
 
     // Create bricks
     _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);

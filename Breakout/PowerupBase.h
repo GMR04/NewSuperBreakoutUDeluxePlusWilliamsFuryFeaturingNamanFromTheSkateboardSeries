@@ -10,7 +10,7 @@
 class PowerupBase
 {
 public:
-    PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball);
+    PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball, sf::Texture* tex);
     virtual ~PowerupBase();
 
     void update(float dt);
@@ -24,7 +24,6 @@ public:
 
 protected: // Protected so derived classes can access these members
     // Constants
-    static constexpr float RADIUS = 20.f;               // size of powerup on screen
     static constexpr float FLOAT_DOWN_SPEED = 250.0f;   // speed of fall
     static constexpr float AMPLITUDE_OF_FALL = 80.0f;   // waviness of fall
 
@@ -36,7 +35,7 @@ protected: // Protected so derived classes can access these members
     sf::Vector2f _direction;
 
     // Render
-    sf::CircleShape _sprite;
+    sf::Sprite _sprite;
     sf::Color _colour;
     sf::RenderWindow* _window;
 

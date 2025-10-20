@@ -1,8 +1,8 @@
 #include "BrickManager.h"
 #include "GameManager.h"
 
-BrickManager::BrickManager(sf::RenderWindow* window, GameManager* gameManager)
-    : _window(window), _gameManager(gameManager)
+BrickManager::BrickManager(sf::RenderWindow* window, sf::Texture* tex, GameManager* gameManager)
+    : _window(window), _texture(tex), _gameManager(gameManager)
 {
 }
 
@@ -18,7 +18,7 @@ void BrickManager::createBricks(int rows, int cols, float brickWidth, float bric
         for (int j = 0; j < cols; ++j) {
             float x = j * (brickWidth + spacing) + leftEdge;
             float y = i * (brickHeight + spacing) + TOP_PADDING;
-            _bricks.emplace_back(x, y, brickWidth, brickHeight);
+            _bricks.emplace_back(x, y, brickWidth, brickHeight, _texture);
         }
     }
 }
@@ -30,7 +30,7 @@ void BrickManager::render()
     }
 }
 
-int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
+int BrickManager::checkCollision(sf::Sprite& ball, sf::Vector2f& direction)
 {
     int collisionResponse = 0;  // set to 1 for horizontal collision and 2 for vertical.
     for (auto& brick : _bricks) {

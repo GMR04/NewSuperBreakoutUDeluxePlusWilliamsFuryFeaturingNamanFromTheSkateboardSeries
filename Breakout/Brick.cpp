@@ -1,21 +1,21 @@
 #include "Brick.h"
 
-Brick::Brick(float x, float y, float width, float height)
+Brick::Brick(float x, float y, float width, float height, sf::Texture* tex)
     : _isDestroyed(false)
 {
-    _shape.setPosition(x, y);
-    _shape.setSize(sf::Vector2f(width, height));
-    _shape.setFillColor(sf::Color::Red);
+    _sprite.setPosition(x, y);
+    _sprite.setTexture(*tex);
+    _sprite.setScale(sf::Vector2f(width / tex->getSize().x, height / tex->getSize().y));
 }
 
 void Brick::render(sf::RenderWindow& window)
 {
     if (!_isDestroyed) {
-        window.draw(_shape);
+        window.draw(_sprite);
     }
 }
 
 sf::FloatRect Brick::getBounds() const
 {
-    return _shape.getGlobalBounds();
+    return _sprite.getGlobalBounds();
 }

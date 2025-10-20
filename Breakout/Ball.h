@@ -9,7 +9,7 @@ class GameManager;  // forward declaration
 
 class Ball {
 public:
-    Ball(sf::RenderWindow* window, ScreenShakeManager* screenShakeManager, float velocity, GameManager* gameManager);
+    Ball(sf::RenderWindow* window, ScreenShakeManager* screenShakeManager, sf::Texture* tex, float velocity, GameManager* gameManager);
     ~Ball();
     void update(float dt);
     void render();
@@ -17,7 +17,7 @@ public:
     void setFireBall(float duration);
 
 private:
-    sf::CircleShape _sprite;
+    sf::Sprite _sprite;
     sf::Vector2f _direction;
     sf::RenderWindow* _window;
     ScreenShakeManager* _screenShakeManager;
