@@ -11,7 +11,7 @@ PowerupBase::PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball, s
     _ball = ball;
 
     // Initial position and direction with some variability
-    float initialX = rand() % window->getSize().x * 0.9 + window->getSize().x * 0.05;
+    float initialX = rand() % (int)(_window->getView().getSize().x);
     _sprite.setPosition(initialX, 5);
     _sprite.setTexture(*tex);
     _sprite.setScale(SCALE, SCALE);
@@ -43,7 +43,7 @@ void PowerupBase::update(float dt)
     //_sprite.setFillColor(sf::Color(static_cast<sf::Uint8>(_colours[0]), static_cast<sf::Uint8>(_colours[1]), static_cast<sf::Uint8>(_colours[2]), 255));
 
     // Collide with floor (i.e., was missed)
-    if (_sprite.getPosition().y + (_sprite.getTextureRect().getSize().y) * SCALE >= _window->getSize().y)
+    if (_sprite.getPosition().y + (_sprite.getTextureRect().getSize().y) * SCALE >= _window->getView().getSize().y)
     {
         _isAlive = false;
     }

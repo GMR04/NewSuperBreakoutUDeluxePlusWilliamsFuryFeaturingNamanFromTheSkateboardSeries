@@ -21,5 +21,6 @@ Fireball (flame)
 * Screen shake upon ball collision
 * Implemented mouse input for paddle
 * Textures for bricks, ball, power-ups, health ui
+* Collisions now scale properly with window when resized
 * Added arrow key support for paddle (previously was just A/D)
 * Fixed the compiler issues in the code
