@@ -1,5 +1,6 @@
 #include "Ball.h"
 #include "GameManager.h" // avoid cicular dependencies
+#include <iostream>
 
 Ball::Ball(sf::RenderWindow* window, ScreenShakeManager* screenShakeManager, sf::Texture* tex, float velocity, GameManager* gameManager)
     : _window(window), _screenShakeManager(screenShakeManager), _velocity(velocity), _gameManager(gameManager),
@@ -7,6 +8,8 @@ Ball::Ball(sf::RenderWindow* window, ScreenShakeManager* screenShakeManager, sf:
 {
     _sprite.setTexture(*tex);
     _sprite.setPosition(0, 300);
+    _sprite.setScale(SCALE, SCALE);
+    _radius = SCALE * _sprite.getTextureRect().getSize().y / 2;
 }
 
 Ball::~Ball()
@@ -47,7 +50,7 @@ void Ball::update(float dt)
     sf::Vector2f windowDimensions = _window->getView().getSize();
 
     // bounce on walls
-    if ((position.x >= windowDimensions.x - 2 * RADIUS && _direction.x > 0) || (position.x <= 0 && _direction.x < 0))
+    if ((position.x >= windowDimensions.x - 2 * _radius && _direction.x > 0) || (position.x <= 0 && _direction.x < 0))
     {
         _direction.x *= -1;
         _screenShakeManager->shake(5, 0.1f);
@@ -80,27 +83,33 @@ void Ball::update(float dt)
         _direction.x = paddlePositionProportion * 2.0f - 1.0f;
 
         // Adjust position to avoid getting stuck inside the paddle
-        _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * RADIUS);
+        _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * _radius);
     }
 
     // collision with bricks
-    int collisionResponse = _gameManager->getBrickManager()->checkCollision(_sprite, _direction);
+    int brickCollisionResponse = _gameManager->getBrickManager()->checkCollision(_sprite, _direction, _isFireBall);
     if (_isFireBall)
     {
-        if (collisionResponse != 0)
+        if (brickCollisionResponse != 0)
             _screenShakeManager->shake(10, 0.125f);
             
         return; // no collisisons when in fireBall mode.
     }
-    if (collisionResponse == 1)
+    if (brickCollisionResponse == 1)
     {
         _direction.x *= -1; // Bounce horizontally
         _screenShakeManager->shake(10, 0.125f);
     }
-    else if (collisionResponse == 2)
+    else if (brickCollisionResponse == 2)
     {
         _direction.y *= -1; // Bounce vertically
         _screenShakeManager->shake(10, 0.125f);
+    }
+
+    // move position forward a bit after brick hit to avoid double hits
+    if (brickCollisionResponse != 0)
+    {
+        _sprite.move(_direction * 5.0f);
     }
 }
 

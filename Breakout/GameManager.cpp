@@ -2,6 +2,7 @@
 #include "Ball.h"
 #include "PowerupManager.h"
 #include <iostream>
+#include <ctime>
 
 GameManager::GameManager(sf::RenderWindow* window)
     : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
@@ -17,21 +18,25 @@ GameManager::GameManager(sf::RenderWindow* window)
 
 void GameManager::initialize()
 {
+    // randomise seed
+    srand(std::time(0));
+
     _screenShakeManager = new ScreenShakeManager(_window);
     _paddle = new Paddle(_window);
-    _brickManager = new BrickManager(_window, &brickTex, this);
+    _brickManager = new BrickManager(_window, &normalBrickTex, &strongBrickTex, this);
     _messagingSystem = new MessagingSystem(_window);
 
     ballTex.loadFromFile("textures/ball.png");
     healthTex.loadFromFile("textures/heart.png");
-    brickTex.loadFromFile("textures/brick.png");
+    normalBrickTex.loadFromFile("textures/brick.png");
+    strongBrickTex.loadFromFile("textures/brick2.png");
 
     _ball = new Ball(_window, _screenShakeManager, &ballTex, 400.0f, this);
     _powerupManager = new PowerupManager(_window, _paddle, _ball);
     _ui = new UI(_window, _lives, &healthTex, this);
 
     // Create bricks
-    _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+    _brickManager->createBricks(5, 10, 66.0f, 26.0f, 5.0f);
 }
 
 void GameManager::update(float dt)
@@ -128,8 +133,11 @@ void GameManager::loseLife()
 {
     _lives--;
     _ui->lifeLost(_lives);
+}
 
-    // TODO screen shake.
+void GameManager::debugPrint(int value)
+{
+    _ui->debugPrint(value);
 }
 
 void GameManager::render()

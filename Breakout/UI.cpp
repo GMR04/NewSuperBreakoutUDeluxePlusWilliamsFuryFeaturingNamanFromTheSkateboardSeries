@@ -12,6 +12,7 @@ UI::UI(sf::RenderWindow* window, int lives, sf::Texture* healthTex, GameManager*
 		sf::Sprite newLife;
 		newLife.setTexture(*healthTex);
 		newLife.setPosition((LIFE_RADIUS*2 + LIFE_PADDING) * i, LIFE_PADDING);
+		newLife.setScale(LIFE_SCALE, LIFE_SCALE);
 		_lives.push_back(newLife);
 	}
 	_powerupText.setCharacterSize(30);
@@ -58,10 +59,16 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 		_powerupText.setFillColor(extraBallEffectsColour);
 		break;
 	case none:
-		_powerupText.setString("");
+		_powerupText.setString(debugText);
 		
 		break;
 	}
+}
+
+void UI::debugPrint(int value)
+{
+	_powerupText.setFillColor(sf::Color::White);
+	debugText = std::to_string(value);
 }
 
 void UI::lifeLost(int lives)

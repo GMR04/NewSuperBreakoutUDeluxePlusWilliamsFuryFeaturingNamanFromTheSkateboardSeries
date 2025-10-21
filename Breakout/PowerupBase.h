@@ -34,6 +34,8 @@ protected: // Protected so derived classes can access these members
     Ball* _ball;
     sf::Vector2f _direction;
 
+    static constexpr int SCALE = 2.0f;
+
     // Render
     sf::Sprite _sprite;
     sf::Color _colour;

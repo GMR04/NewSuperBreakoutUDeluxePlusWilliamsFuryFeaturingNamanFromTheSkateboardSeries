@@ -15,6 +15,7 @@ public:
 
 	void updatePowerupText(std::pair<POWERUPS, float>);
 	void lifeLost(int lives);
+	void debugPrint(int value);
 	void render();
 
 private:
@@ -28,5 +29,7 @@ private:
 
 	static constexpr float LIFE_RADIUS = 15.0f;
 	static constexpr float LIFE_PADDING = 20.0f;
+	static constexpr int LIFE_SCALE = 2;
+	std::string debugText = "";
 };
 

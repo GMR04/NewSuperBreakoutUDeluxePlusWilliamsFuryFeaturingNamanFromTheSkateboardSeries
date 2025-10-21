@@ -17,6 +17,7 @@ public:
     void initialize();
     void update(float dt);
     void loseLife();
+    void debugPrint(int value);
     void render();
     void levelComplete();
     void powerupEffect(POWERUPS pu, float t);
@@ -45,7 +46,8 @@ private:
     // common sprite textures
     sf::Texture ballTex;
     sf::Texture healthTex;
-    sf::Texture brickTex;
+    sf::Texture normalBrickTex;
+    sf::Texture strongBrickTex;
 
     sf::RenderWindow* _window;
     Paddle* _paddle;
