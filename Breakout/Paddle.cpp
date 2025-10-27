@@ -33,10 +33,10 @@ void Paddle::moveRight(float dt)
     }
 }
 
-void Paddle::setPositionX(int mouseX)
+void Paddle::setPositionX(int posX)
 {
-    // set posX to mouse position offset by half of paddle width, to ensure paddle is centred on the mouse
-    int posX = mouseX - _width / 2;
+    // offset posX by half of paddle width, to ensure paddle is centred on the mouse
+    posX -= _width / 2;
     
     // keep within screen bounds
     posX = std::min(posX, (int)(_window->getView().getSize().x - _width));
